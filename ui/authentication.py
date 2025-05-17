@@ -2,7 +2,7 @@ import streamlit as st
 import sqlite3
 import hashlib
 
-conn = sqlite3.connect('/Users/ahdosama/Downloads/fitness_coach_agent/database/FitnessCoach.db', check_same_thread=False)
+conn = sqlite3.connect('../database/FitnessCoach.db', check_same_thread=False)
 cursor = conn.cursor()
 
 def hash_password(password):
