@@ -3,7 +3,7 @@ import pandas as pd
 import sqlite3
 
 def database(): 
-    conn = sqlite3.connect("/Users/ahdosama/Downloads/fitness_coach_agent/database/FitnessCoach.db", check_same_thread=False)
+    conn = sqlite3.connect("../database/FitnessCoach.db", check_same_thread=False)
 
     st.title("📊 Database")
 
