@@ -57,7 +57,7 @@ def diet_section(diet_text):
     return "\n".join(formatted)
 
 def get_gym_prediction(gym_prediction):
-    encoders = joblib.load("../encoders/gym_encoders.pkl")  
+    encoders = joblib.load("encoders/gym_encoders.pkl")  
     fitness_plan_encoder = encoders['Fitness Plan'] 
     fitness_plan = fitness_plan_encoder.inverse_transform([gym_prediction])[0]
 
@@ -70,13 +70,13 @@ def get_gym_prediction(gym_prediction):
     return exercises, diet, equipment, recommendation
 
 def get_diet_type(diet_prediction):
-    encoders = joblib.load("../encoders/diet_encoders.pkl") 
+    encoders = joblib.load("encoders/diet_encoders.pkl") 
     encoder = encoders['Diet_Recommendation'] 
     diet_type = encoder.inverse_transform([diet_prediction])[0]
     return diet_type
 
 def get_rec_from_db():
-    conn = sqlite3.connect('../database/FitnessCoach.db', check_same_thread=False)
+    conn = sqlite3.connect('database/FitnessCoach.db', check_same_thread=False)
     cursor = conn.cursor()
 
     user_id = st.session_state.user_id 
@@ -142,7 +142,7 @@ def calculate_target_weight(height_cm, current_weight, fitness_goal):
 def progress_tracking():
     st.title("📈 **Track Your Progress**")
     st.divider()
-    conn = sqlite3.connect("../database/FitnessCoach.db", check_same_thread=False)
+    conn = sqlite3.connect("database/FitnessCoach.db", check_same_thread=False)
     cursor = conn.cursor()
 
     cursor.execute("SELECT height, Weight, \"Fitness Goal\" FROM User_info WHERE user_id = ?", (st.session_state.user_id,))
@@ -231,9 +231,6 @@ def progress_tracking():
     timeline_df = pd.DataFrame(weight_timeline, columns=["Date", "Weight"])
     timeline_df["Date"] = pd.to_datetime(timeline_df["Date"], dayfirst=True)
 
-        
- 
-
     col1, col2 = st.columns(2)
     with col1:
         st.subheader("📉 Weight Change Over Time")
@@ -242,23 +239,18 @@ def progress_tracking():
 
         fig, ax = plt.subplots()
 
-        # Plot data
         ax.plot(timeline_df["Date"], timeline_df["Weight"], marker='o', linestyle='-')
 
-        # Labels and title
         ax.set_xlabel("Date")
         ax.set_ylabel("Weight (kg)")
         ax.set_title("Weight Progress")
         ax.grid(True)
 
-        # Fix date format on x-axis
-        ax.xaxis.set_major_formatter(mdates.DateFormatter('%d/%m/%Y'))  # Day/Month/Year
-        ax.xaxis.set_major_locator(mdates.AutoDateLocator())  # Smart spacing
+        ax.xaxis.set_major_formatter(mdates.DateFormatter('%d/%m/%Y')) 
+        ax.xaxis.set_major_locator(mdates.AutoDateLocator()) 
 
-        # Rotate for readability
         fig.autofmt_xdate(rotation=30)
 
-        # Add padding to Y-axis
         min_w = timeline_df["Weight"].min()
         max_w = timeline_df["Weight"].max()
         padding = 2
