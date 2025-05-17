@@ -90,7 +90,7 @@ def form_page():
             diet_prediction = diet_predict(diet_features)
             diet_int = int(diet_prediction[0])
 
-            conn = sqlite3.connect('../database/FitnessCoach.db', check_same_thread=False)
+            conn = sqlite3.connect('database/FitnessCoach.db', check_same_thread=False)
             cursor = conn.cursor()
 
             cursor.execute("INSERT INTO plan (user_id, gym_rec, diet_rec) VALUES (?, ?, ?)", 
@@ -188,11 +188,11 @@ def encode_diet_features(
     return diet_features
 
 def gym_predict(gym_features):
-    gym_model = joblib.load("../models/gym_model.pkl")
+    gym_model = joblib.load("models/gym_model.pkl")
     prediction = gym_model.predict(gym_features)
     return prediction
 
 def diet_predict(diet_features):
-    diet_model = joblib.load("../models/diet_model.pkl")
+    diet_model = joblib.load("models/diet_model.pkl")
     prediction = diet_model.predict(diet_features)
     return prediction
