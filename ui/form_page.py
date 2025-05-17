@@ -90,7 +90,7 @@ def form_page():
             diet_prediction = diet_predict(diet_features)
             diet_int = int(diet_prediction[0])
 
-            conn = sqlite3.connect('/Users/ahdosama/Downloads/fitness_coach_agent/database/FitnessCoach.db', check_same_thread=False)
+            conn = sqlite3.connect('../database/FitnessCoach.db', check_same_thread=False)
             cursor = conn.cursor()
 
             cursor.execute("INSERT INTO plan (user_id, gym_rec, diet_rec) VALUES (?, ?, ?)", 
@@ -117,7 +117,7 @@ def form_page():
 def encode_gym_features(age, height, weight, gender, bmi, disease, weight_category, fitness_goal, fitness_type):
     gender_map = {"Female": 0, "Male": 1}
     disease_map = {"None": [0, 0], "Hypertension": [1, 0], "Diabetes": [0, 1], "Obesity": [0, 0]} 
-    level_map = {"Normal": 0, "Obuse": 1, "Overweight": 2, "Underweight": 3}
+    level_map = {"Normal": 0, "Obese": 1, "Overweight": 2, "Underweight": 3}
     fitness_goal_map = {"Weight Gain": 0, "Weight Loss": 1}
     fitness_type_map = {"Cardio Fitness": 0, "Muscular Fitness": 1}
 
@@ -188,11 +188,11 @@ def encode_diet_features(
     return diet_features
 
 def gym_predict(gym_features):
-    gym_model = joblib.load("/Users/ahdosama/Downloads/fitness_coach_agent/models/gym_model.pkl")
+    gym_model = joblib.load("../models/gym_model.pkl")
     prediction = gym_model.predict(gym_features)
     return prediction
 
 def diet_predict(diet_features):
-    diet_model = joblib.load("/Users/ahdosama/Downloads/fitness_coach_agent/models/diet_model.pkl")
+    diet_model = joblib.load("../models/diet_model.pkl")
     prediction = diet_model.predict(diet_features)
     return prediction
